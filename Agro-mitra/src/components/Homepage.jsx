@@ -1,118 +1,251 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const Homepage = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const services = [
+    { title: 'Crop Disease Detection', icon: '🔬', description: 'Identify and prevent crop diseases early.' },
+    { title: 'Soil Analysis', icon: '🌱', description: 'Get detailed insights into your soil health.' },
+    { title: 'Crop Prediction', icon: '📊', description: 'Forecast crop yields with AI-powered analysis.' },
+  ];
+
+  const testimonials = [
+    { name: 'Farmer Singh', quote: 'Agro Mitra has revolutionized my farming practices!' },
+    { name: 'Lakshmi Devi', quote: 'The crop predictions are remarkably accurate.' },
+    { name: 'Raj Kumar', quote: 'Soil analysis helped me improve my yield significantly.' },
+  ];
+
   return (
-    <div className="min-h-screen w-full bg-[#fcfaf8] overflow-x-hidden" style={{fontFamily: 'Manrope, "Noto Sans", sans-serif'}}>
-      <div className="flex flex-col min-h-screen">
-        <header className="flex items-center justify-between border-b border-solid border-b-[#f4eee7] px-4 sm:px-10 py-3">
-          <div className="flex items-center gap-4 text-[#1c150d]">
-            <div className="w-8 h-8">
-              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clipPath="url(#clip0_6_319)">
-                  <path
-                    d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z"
-                    fill="currentColor"
-                  ></path>
-                </g>
-                <defs>
-                  <clipPath id="clip0_6_319"><rect width="48" height="48" fill="white"></rect></clipPath>
-                </defs>
-              </svg>
+    <div className="min-h-screen w-full bg-gradient-to-b from-gray-900 to-gray-800 text-white overflow-x-hidden font-sans">
+      <div className="relative">
+        {/* Background layers */}
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80')] bg-cover bg-center opacity-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/70 to-gray-900"></div>
+
+        <div className="relative z-10">
+        </div>
+        <motion.header
+          initial={{ y: -100 }}
+          animate={{ y: 0 }}
+          transition={{ type: 'spring', stiffness: 100 }}
+          className={`fixed w-full transition-all duration-300 ${isScrolled ? 'bg-gray-900/80 backdrop-blur-md' : 'bg-transparent'}`}
+        >
+          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <motion.div
+                whileHover={{ scale: 1.1, rotate: 360 }}
+                transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+                className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-xl"
+              >
+                AM
+              </motion.div>
+              <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
+                Agro Mitra
+              </span>
             </div>
-            <h2 className="text-[#1c150d] text-lg font-bold leading-tight tracking-[-0.015em]">CropCare AI</h2>
-          </div>
-          <div className="flex items-center gap-4 sm:gap-8">
-            <nav className="hidden sm:flex items-center gap-4 sm:gap-9">
-              <Link to="/Services" className="text-[#1c150d] text-sm font-medium leading-normal">Services</Link>
-              <Link to="/AboutUs" className="text-[#1c150d] text-sm font-medium leading-normal">About Us</Link>
-              <Link to="/GovernmentScheme" className="text-[#1c150d] text-sm font-medium leading-normal">Government Scheme</Link>
-              <Link to="/Contact" className="text-[#1c150d] text-sm font-medium leading-normal">Contact</Link>
-            </nav>
-            <div className="flex gap-2">
-              <button className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#f49a25] text-[#1c150d] text-sm font-bold leading-normal tracking-[0.015em]">
-                <span className="truncate">Get Started</span>
-              </button>
-              <button className="flex cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 bg-[#f4eee7] text-[#1c150d] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </header>
-        <main className="flex-grow">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="w-full max-w-6xl mx-auto">
-              <div className="mb-12">
-                <div
-                  className="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat rounded-xl items-start justify-end px-4 sm:px-10 pb-10"
-                  style={{backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("https://cdn.usegalileo.ai/stability/58040ba1-58a0-43f1-befe-3068eef5bf71.png")'}}
+            <nav className="hidden md:flex space-x-6">
+              {['Services', 'About Us', 'Government Scheme', 'Crop Disease', 'Contact', 'Blog'].map((item) => (
+                <motion.a
+                  key={item}
+                  href={`#${item.toLowerCase().replace(' ', '-')}`}
+                  className="text-gray-300 hover:text-white transition-colors relative group"
+                  whileHover={{ scale: 1.1 }}
                 >
-                  <div className="flex flex-col gap-2 text-left">
-                    <h1 className="text-white text-4xl sm:text-5xl font-black leading-tight tracking-[-0.033em]">
-                      AI-Powered Soil Analysis
-                    </h1>
-                    <h2 className="text-white text-sm sm:text-base font-normal leading-normal">
-                      Understand soil health, nutrient levels, and more with our AI-powered soil analysis. Get actionable insights for better crop care.
-                    </h2>
-                  </div>
-                  <div className="w-full max-w-[480px]">
-                    <div className="flex w-full items-stretch rounded-xl h-14 sm:h-16">
-                      <div className="text-[#9c7849] flex border border-[#e8ddce] bg-[#fcfaf8] items-center justify-center pl-[15px] rounded-l-xl border-r-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <circle cx="11" cy="11" r="8"></circle>
-                          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                      </div>
-                      <input
-                        placeholder="Enter your location"
-                        className="flex-grow form-input min-w-0 resize-none overflow-hidden text-[#1c150d] focus:outline-none focus:ring-0 border border-[#e8ddce] bg-[#fcfaf8] focus:border-[#e8ddce] placeholder:text-[#9c7849] px-[15px] rounded-none border-l-0 text-sm sm:text-base font-normal leading-normal"
-                      />
-                      <div className="flex items-center justify-center rounded-r-xl border-l-0 border border-[#e8ddce] bg-[#fcfaf8] pr-[7px]">
-                        <button className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 sm:h-12 sm:px-5 bg-[#f49a25] text-[#1c150d] text-sm sm:text-base font-bold leading-normal tracking-[0.015em]">
-                          <span className="truncate">Analyze Soil</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                  {item}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-400 transition-all group-hover:w-full"></span>
+                </motion.a>
+              ))}
+            </nav>
+            <div className="flex items-center space-x-4">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-4 py-2 rounded-full bg-green-500 text-white font-semibold hover:bg-green-600 transition-colors"
+              >
+                Login
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-4 py-2 rounded-full bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-colors"
+              >
+                Sign Up
+              </motion.button>
+            </div>
+          </div>
+        </motion.header>
+
+        {/* Hero Section */}
+        <section className="min-h-screen flex items-center justify-center text-center px-4 py-20">
+          <div className="max-w-4xl">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500"
+            >
+              Empower Your Farm with AI
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-xl md:text-2xl mb-8 text-gray-300"
+            >
+              Harness the power of artificial intelligence to revolutionize your farming practices
+            </motion.p>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-3 rounded-full bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold text-lg hover:from-green-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
+              Let's Explore
+            </motion.button>
+          </div>
+        </section>
+
+        {/* About Us Section */}
+        <section id="about-us" className="py-20 bg-gray-800/50 backdrop-blur-md">
+          <div className="container mx-auto px-4">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-4xl font-bold mb-8 text-center"
+            >
+              About Agro Mitra
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-xl text-center max-w-3xl mx-auto text-gray-300"
+            >
+              Agro Mitra is your AI-powered companion in agriculture. We combine cutting-edge technology with farming expertise to help you make data-driven decisions, improve crop yields, and cultivate a sustainable future.
+            </motion.p>
+          </div>
+        </section>
+
+        {/* Services Section */}
+        <section id="services" className="py-20">
+          <div className="container mx-auto px-4">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-4xl font-bold mb-12 text-center"
+            >
+              Our Services
+            </motion.h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {services.map((service, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05, rotateY: 10 }}
+                  className="bg-gray-800/50 backdrop-blur-md p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300"
+                >
+                  <div className="text-4xl mb-4">{service.icon}</div>
+                  <h3 className="text-2xl font-semibold mb-4">{service.title}</h3>
+                  <p className="text-gray-300">{service.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials Section */}
+        <section id="testimonials" className="py-20 bg-gray-800/50 backdrop-blur-md overflow-hidden">
+          <div className="container mx-auto px-4">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-4xl font-bold mb-12 text-center"
+            >
+              What Farmers Say
+            </motion.h2>
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: '-100%' }}
+              transition={{
+                x: {
+                  repeat: Infinity,
+                  repeatType: 'loop',
+                  duration: 20,
+                  ease: 'linear',
+                },
+              }}
+              className="flex space-x-6"
+            >
+              {[...testimonials, ...testimonials].map((testimonial, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-700/50 backdrop-blur-md p-6 rounded-xl shadow-lg flex-shrink-0 w-80"
+                >
+                  <p className="text-lg mb-4">"{testimonial.quote}"</p>
+                  <p className="font-semibold">- {testimonial.name}</p>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="bg-gray-900 text-white py-12 relative z-10">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              <div>
+                <h3 className="text-2xl font-bold mb-4">Agro Mitra</h3>
+                <p className="text-gray-400">Empowering farmers with AI</p>
+              </div>
+              <div>
+                <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+                <ul className="space-y-2">
+                  <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Home</a></li>
+                  <li><a href="#services" className="text-gray-400 hover:text-white transition-colors">Services</a></li>
+                  <li><a href="#about-us" className="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+                  <li><a href="#contact" className="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-lg font-semibold mb-4">Services</h4>
+                <ul className="space-y-2">
+                  <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Crop Disease Detection</a></li>
+                  <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Soil Analysis</a></li>
+                  <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Crop Prediction</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-lg font-semibold mb-4">Connect With Us</h4>
+                <div className="flex space-x-4">
+                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
+                    </svg>
+                  </a>
+                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clipRule="evenodd" />
+                    </svg>
+                  </a>
+                  {/* You can add more social media icons here */}
                 </div>
               </div>
-              <div className="mb-12">
-                <h2 className="text-[#1c150d] text-3xl sm:text-4xl font-bold leading-tight tracking-[-0.033em] mb-4">
-                  Unlock the full potential of your crops
-                </h2>
-                <button className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 sm:h-12 sm:px-5 bg-[#f49a25] text-[#1c150d] text-sm sm:text-base font-bold leading-normal tracking-[0.015em]">
-                  <span className="truncate">Learn More</span>
-                </button>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
-                {[
-                  "https://cdn.usegalileo.ai/stability/b025b8d6-95f1-4937-9ca5-0cdff0d4bcbc.png",
-                  "https://cdn.usegalileo.ai/sdxl10/764d599b-322d-4c27-b15f-9a7694dd8cd3.png",
-                  "https://cdn.usegalileo.ai/stability/7ead4119-5b15-4d3b-9bdb-4128eab290b8.png"
-                ].map((url, index) => (
-                  <div key={index} className="aspect-video">
-                    <div
-                      className="w-full h-full bg-center bg-no-repeat bg-cover rounded-xl"
-                      style={{backgroundImage: `url("${url}")`}}
-                    ></div>
-                  </div>
-                ))}
-              </div>
-              <div className="text-center">
-                <h2 className="text-[#1c150d] text-3xl sm:text-4xl font-bold leading-tight tracking-[-0.033em] mb-6">
-                  Ready to grow smarter?
-                </h2>
-                <button className="inline-flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 sm:h-12 sm:px-5 bg-[#f49a25] text-[#1c150d] text-sm sm:text-base font-bold leading-normal tracking-[0.015em]">
-                  <span className="truncate">Contact Us</span>
-                </button>
-              </div>
             </div>
           </div>
-        </main>
+        </footer>
       </div>
     </div>
   );
