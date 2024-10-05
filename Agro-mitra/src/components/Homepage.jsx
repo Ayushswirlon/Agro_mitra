@@ -1,119 +1,549 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X, ChevronDown, User, Zap, Leaf, BarChart2, Users } from 'lucide-react';
+import '../colors.css';
+
+const AgroMitraLogo = () => (
+  <div className="text-2xl font-bold text-emerald-400">Agro-Mitra</div>
+);
+
+const NavLink = ({ href, children }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <a
+      href={href}
+      className="px-3 py-2 text-sm font-medium text-emerald-200 hover:text-white rounded-md transition duration-300 ease-in-out relative"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {children}
+      {isHovered && (
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-400"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.2 }}
+        />
+      )}
+    </a>
+  );
+};
+
+const NavBar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <motion.nav
+      className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-opacity-90 shadow-lg' : ''}`}
+      style={{ backgroundColor: isScrolled ? 'var(--secondary-dark)' : 'transparent' }}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center">
+            <AgroMitraLogo />
+            <div className="hidden md:block ml-10">
+              <div className="flex items-baseline space-x-4">
+                <NavLink href="#services">Services</NavLink>
+                <NavLink href="#about">About Us</NavLink>
+                <NavLink href="#government-scheme">Government Scheme</NavLink>
+                <NavLink href="#testimonials">Testimonials</NavLink>
+                <NavLink href="#contact">Contact Us</NavLink>
+              </div>
+            </div>
+          </div>
+          <div className="hidden md:block">
+            {isLoggedIn ? (
+              <div className="relative">
+                <button className="flex items-center text-sm font-medium text-emerald-200 hover:text-emerald-400 focus:outline-none focus:text-emerald-400 transition duration-300">
+                  <User className="h-6 w-6 mr-1" />
+                  <span>Profile</span>
+                  <ChevronDown className="ml-1 h-4 w-4" />
+                </button>
+              </div>
+            ) : (
+              <div>
+                <button className="px-3 py-2 rounded-md text-sm font-medium text-emerald-200 hover:text-emerald-400 focus:outline-none focus:text-emerald-400 transition duration-300">
+                  Login
+                </button>
+                <button className="ml-3 px-3 py-2 rounded-md text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-500 focus:outline-none focus:bg-emerald-500 transition duration-300">
+                  Sign Up
+                </button>
+              </div>
+            )}
+          </div>
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-emerald-400 hover:text-white hover:bg-emerald-700 focus:outline-none focus:bg-emerald-700 focus:text-white transition duration-300"
+            >
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
+        </div>
+      </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="md:hidden"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              <NavLink href="#services">Services</NavLink>
+              <NavLink href="#about">About Us</NavLink>
+              <NavLink href="#government-scheme">Government Scheme</NavLink>
+              <NavLink href="#testimonials">Testimonials</NavLink>
+              <NavLink href="#contact">Contact Us</NavLink>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
+  );
+};
+
+const HeroSection = () => {
+  return (
+    <div className="relative overflow-hidden" style={{ height: '100vh', backgroundColor: 'var(--background)' }}>
+      <div className="absolute inset-0 bg-[url('/api/placeholder/1920/1080')] bg-cover bg-center opacity-20"></div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 h-full flex flex-col justify-center">
+        <motion.div
+          className="text-left mb-8 max-w-lg"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h1 className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
+            <span className="block">Revolutionizing</span>{' '}
+            <span className="block text-emerald-400">Agriculture with AI</span>
+          </h1>
+          <p className="mt-3 text-base text-emerald-100 sm:text-lg md:mt-5 md:text-xl">
+            Empowering Farmers to Grow Smarter and Harvest Better
+          </p>
+          <motion.div
+            className="mt-5"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <a href="#services" className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 md:py-4 md:text-lg md:px-10 transition-colors duration-300">
+              Explore Solutions
+            </a>
+          </motion.div>
+        </motion.div>
+
+        <div className="absolute bottom-0 left-0 right-0 h-40 overflow-hidden">
+          <motion.div
+            className="w-full h-full"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.5 }}
+          >
+            <div className="w-full h-full bg-[url('/api/placeholder/1920/200')] bg-repeat-x animate-slide-left"></div>
+          </motion.div>
+        </div>
+
+        <motion.div
+          className="absolute right-0 top-1/6 w-85 h-85"
+          initial={{ x: '100%' }}
+          animate={{ x: 0 }}
+          transition={{ duration: 2, delay: 1, ease: "easeInOut" }}
+        >
+          <img
+            src="https://media.tenor.com/SsN_iw5_OlAAAAAi/%D0%B0%D1%8D%D1%80%D0%BE%D1%81%D1%8A%D0%B5%D0%BC%D0%BA%D0%B0-%D0%B4%D1%80%D0%BE%D0%BD.gif"
+            alt="AI in Agriculture"
+            className="w-full h-full object-contain"
+          />
+          <div className="absolute -bottom-4 left-0 right-0 h-8 bg-black opacity-20 blur-md transform skew-x-12"></div>
+        </motion.div>
+      </div>
+
+      {/* Full-width and full-height crops gif video */}
+      <div className="absolute inset-0 z-0">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src="https://videos.pexels.com/video-files/4377026/4377026-uhd_2560_1440_24fps.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div className="absolute inset-0 bg-black opacity-50"></div>
+      </div>
+    </div>
+  );
+};
+
+const FeatureCard = ({ icon: Icon, title, description }) => (
+  <motion.div
+    className="p-6 rounded-lg shadow-lg"
+    style={{ backgroundColor: 'var(--secondary-light)' }}
+    whileHover={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
+    transition={{ type: "spring", stiffness: 300 }}
+  >
+    <motion.div
+      className="w-16 h-16 mx-auto bg-emerald-600 rounded-full flex items-center justify-center"
+      whileHover={{ rotate: 360 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Icon className="w-8 h-8 text-white" />
+    </motion.div>
+    <h3 className="mt-4 text-xl font-semibold text-white text-center">{title}</h3>
+    <p className="mt-2 text-emerald-200 text-center">{description}</p>
+  </motion.div>
+);
+
+const AboutSection = () => {
+  const features = [
+    {
+      icon: Zap,
+      title: "AI-Powered Detection",
+      description: "Instantly identify crop diseases and get treatment plans"
+    },
+    {
+      icon: Leaf,
+      title: "Sustainable Farming",
+      description: "Access resources for eco-friendly agricultural practices"
+    },
+    {
+      icon: BarChart2,
+      title: "Productivity Boost",
+      description: "Optimize your yield with data-driven insights"
+    },
+    {
+      icon: Users,
+      title: "Expert Support",
+      description: "Connect with agricultural experts for personalized advice"
+    }
+  ];
+
+  return (
+    <section id="about" className="py-20 bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl font-extrabold text-emerald-400 mb-4">About Agro-Mitra</h2>
+          <p className="text-xl text-emerald-100 max-w-3xl mx-auto">
+            Agro-Mitra is an AI-powered platform revolutionizing agriculture by empowering farmers with cutting-edge technology and essential resources.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+          {features.map((feature, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              <FeatureCard {...feature} />
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div
+          className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <div className="relative h-64 md:h-auto">
+            <img
+              src="https://imgs.search.brave.com/8h1tDxVbFXeIzvD4I9K_NS7qP0nldLwy-ZZTFZUcG98/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/YW5hbHl0aWNzdmlk/aHlhLmNvbS93cC1j/b250ZW50L3VwbG9h/ZHMvMjAyNC8wMy9L/aXNzYW5BSV9VbnZl/aWxzX0RoZW51X1Zp/c2lvbl9MTE1zX2Zv/cl9Dcm9wX0Rpc2Vh/c2VfRGV0ZWN0aW9u/LmpwZw"
+              alt="Farmer using Agro-Mitra app"
+              className="rounded-lg shadow-lg object-cover w-full h-full"
+            />
+          </div>
+          <div className="flex flex-col justify-center">
+            <h3 className="text-2xl font-bold text-emerald-400 mb-4">Empowering Farmers</h3>
+            <p className="text-emerald-100">
+              Our mission is to bridge the gap between traditional farming practices and cutting-edge technology.
+              With Agro-Mitra, farmers can make data-driven decisions, improve crop yields, and contribute to
+              sustainable agriculture.
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+const ServiceCard = ({ title, description, icon: Icon }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <motion.div
+      className="p-6 bg-emerald-800 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+      whileHover={{ scale: 1.05 }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+    >
+      <motion.div
+        className="flex items-center justify-center w-16 h-16 mx-auto bg-emerald-600 rounded-full"
+        animate={{ rotateY: isHovered ? 180 : 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <Icon className="w-8 h-8 text-white" />
+      </motion.div>
+      <h3 className="mt-4 text-xl font-semibold text-white">{title}</h3>
+      <p className="mt-2 text-emerald-200">{description}</p>
+    </motion.div>
+  );
+};
+
+const ServicesSection = () => (
+  <motion.div
+    id="services"
+    className="py-12 bg-gray-900"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.8 }}
+  >
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <motion.div
+        className="text-center"
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
+        <h2 className="text-3xl font-extrabold text-emerald-400 sm:text-4xl">Our Services</h2>
+        <p className="mt-4 text-xl text-emerald-100">Empowering farmers with AI-driven solutions</p>
+      </motion.div>
+      <motion.div
+        className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
+        <ServiceCard
+          title="Crop Disease Detection"
+          description="AI-powered disease detection for early intervention"
+          icon={() => <div>🌿</div>}
+        />
+        <ServiceCard
+          title="Soil Analysis"
+          description="Comprehensive soil health assessment"
+          icon={() => <div>🔬</div>}
+        />
+        <ServiceCard
+          title="Fertilizer Recommendations"
+          description="Personalized fertilizer plans for optimal growth"
+          icon={() => <div>🧪</div>}
+        />
+        <ServiceCard
+          title="Weather Forecasting"
+          description="Accurate weather predictions for informed decisions"
+          icon={() => <div>🌤️</div>}
+        />
+      </motion.div>
+    </div>
+  </motion.div>
+);
+
+const SchemeCard = ({ title, description }) => (
+  <motion.div
+    className="bg-emerald-800 p-6 rounded-lg shadow-lg"
+    whileHover={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
+    transition={{ type: "spring", stiffness: 300 }}
+  >
+    <h3 className="text-xl font-semibold text-emerald-300 mb-2">{title}</h3>
+    <p className="text-emerald-100">{description}</p>
+    <motion.button
+      className="mt-4 px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-500 transition duration-300"
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
+    >
+      Learn More
+    </motion.button>
+  </motion.div>
+);
+
+const GovernmentSchemeSection = () => (
+  <div id="government-scheme" className="py-12 bg-gray-900">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 className="text-3xl font-extrabold text-emerald-400 text-center mb-8">Government Schemes</h2>
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <SchemeCard
+          title="Pradhan Mantri Fasal Bima Yojana"
+          description="Crop insurance scheme to provide financial support to farmers in case of crop failure due to natural calamities."
+        />
+        <SchemeCard
+          title="Soil Health Card Scheme"
+          description="Provides information to farmers on nutrient status of their soil along with recommendations on appropriate dosage of nutrients."
+        />
+        <SchemeCard
+          title="PM Kisan Samman Nidhi"
+          description="Direct income support of ₹6000 per year to eligible farmer families, payable in three equal installments."
+        />
+      </div>
+    </div>
+  </div>
+);
+
+const TestimonialCard = ({ name, role, content, image }) => (
+  <motion.div
+    className="bg-emerald-800 p-6 rounded-lg shadow-lg"
+    whileHover={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
+    transition={{ type: "spring", stiffness: 300 }}
+  >
+    <p className="text-emerald-100 italic mb-4">"{content}"</p>
+    <div className="flex items-center">
+      <div className="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center text-white font-bold text-xl overflow-hidden">
+        {image ? (
+          <img src={image} alt={name} className="w-full h-full object-cover" />
+        ) : (
+          name[0]
+        )}
+      </div>
+      <div className="ml-4">
+        <h4 className="text-lg font-semibold text-white">{name}</h4>
+        <p className="text-emerald-300">{role}</p>
+      </div>
+    </div>
+  </motion.div>
+);
+
+const TestimonialsSection = () => (
+  <div id="testimonials" className="py-12 bg-gray-800">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 className="text-3xl font-extrabold text-emerald-400 text-center mb-8">What Our Users Say</h2>
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <TestimonialCard
+          name="Rajesh Kumar"
+          role="Wheat Farmer, Punjab"
+          content="Agro-Mitra's AI-powered disease detection saved my crop from a severe fungal infection. It's a game-changer for small farmers like me!"
+          image="/api/placeholder/100/100"
+        />
+        <TestimonialCard
+          name="Anita Patel"
+          role="Organic Vegetable Grower, Gujarat"
+          content="The soil analysis feature helped me optimize my fertilizer use. My yields have improved, and I'm saving money on inputs. Highly recommended!"
+          image="/api/placeholder/100/100"
+        />
+        <TestimonialCard
+          name="Mahesh Singh"
+          role="Mango Orchard Owner, Maharashtra"
+          content="The weather forecasting is incredibly accurate. It has helped me plan my irrigation and harvesting schedules much more effectively."
+          image="/api/placeholder/100/100"
+        />
+      </div>
+    </div>
+  </div>
+);
+
+const ContactForm = () => (
+  <form className="mt-8 space-y-6">
+    <div>
+      <label htmlFor="name" className="sr-only">Name</label>
+      <input id="name" name="name" type="text" required className="appearance-none rounded-none relative block w-full px-3 py-2 border border-emerald-300 placeholder-emerald-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm" placeholder="Name" />
+    </div>
+    <div>
+      <label htmlFor="email" className="sr-only">Email</label>
+      <input id="email" name="email" type="email" required className="appearance-none rounded-none relative block w-full px-3 py-2 border border-emerald-300 placeholder-emerald-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm" placeholder="Email" />
+    </div>
+    <div>
+      <label htmlFor="message" className="sr-only">Message</label>
+      <textarea id="message" name="message" required className="appearance-none rounded-none relative block w-full px-3 py-2 border border-emerald-300 placeholder-emerald-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm" placeholder="Message" rows="4"></textarea>
+    </div>
+    <div>
+      <motion.button
+        type="submit"
+        className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        Submit
+      </motion.button>
+    </div>
+  </form>
+);
+
+const ContactSection = () => (
+  <div id="contact" className="py-12 bg-gray-800">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="lg:text-center">
+        <h2 className="text-3xl font-extrabold text-emerald-400 sm:text-4xl">Contact Us</h2>
+        <p className="mt-4 max-w-2xl text-xl text-emerald-100 lg:mx-auto">
+          Get in touch with us for any inquiries or support.
+        </p>
+      </div>
+      <div className="mt-10 lg:mt-20 lg:grid lg:grid-cols-2 lg:gap-8">
+        <div>
+          <ContactForm />
+        </div>
+        <div className="mt-10 lg:mt-0">
+          {/* Map component would go here */}
+          <div className="bg-emerald-700 h-64 rounded-lg"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const Footer = () => (
+  <footer className="bg-gray-900">
+    <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <nav className="-mx-5 -my-2 flex flex-wrap justify-center">
+        <div className="px-5 py-2">
+          <a href="#" className="text-base text-emerald-400 hover:text-white transition duration-300">
+            Terms & Conditions
+          </a>
+        </div>
+        <div className="px-5 py-2">
+          <a href="#" className="text-base text-emerald-400 hover:text-white transition duration-300">
+            Privacy Policy
+          </a>
+        </div>
+        <div className="px-5 py-2">
+          <a href="#" className="text-base text-emerald-400 hover:text-white transition duration-300">
+            Support
+          </a>
+        </div>
+      </nav>
+      <div className="mt-8 flex justify-center space-x-6">
+        {/* Social media icons would go here */}
+      </div>
+      <p className="mt-8 text-center text-base text-emerald-400">
+        &copy; 2024 Agro-Mitra. All rights reserved.
+      </p>
+    </div>
+  </footer>
+);
 
 const Homepage = () => {
   return (
-    <div className="min-h-screen w-full bg-[#fcfaf8] overflow-x-hidden" style={{fontFamily: 'Manrope, "Noto Sans", sans-serif'}}>
-      <div className="flex flex-col min-h-screen">
-        <header className="flex items-center justify-between border-b border-solid border-b-[#f4eee7] px-4 sm:px-10 py-3">
-          <div className="flex items-center gap-4 text-[#1c150d]">
-            <div className="w-8 h-8">
-              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clipPath="url(#clip0_6_319)">
-                  <path
-                    d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z"
-                    fill="currentColor"
-                  ></path>
-                </g>
-                <defs>
-                  <clipPath id="clip0_6_319"><rect width="48" height="48" fill="white"></rect></clipPath>
-                </defs>
-              </svg>
-            </div>
-            <h2 className="text-[#1c150d] text-lg font-bold leading-tight tracking-[-0.015em]">CropCare AI</h2>
-          </div>
-          <div className="flex items-center gap-4 sm:gap-8">
-            <nav className="hidden sm:flex items-center gap-4 sm:gap-9">
-              <Link to="/Services" className="text-[#1c150d] text-sm font-medium leading-normal">Services</Link>
-              <Link to="/AboutUs" className="text-[#1c150d] text-sm font-medium leading-normal">About Us</Link>
-              <Link to="/GovernmentScheme" className="text-[#1c150d] text-sm font-medium leading-normal">Government Scheme</Link>
-              <Link to="/Contact" className="text-[#1c150d] text-sm font-medium leading-normal">Contact</Link>
-            </nav>
-            <div className="flex gap-2">
-              <button className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#f49a25] text-[#1c150d] text-sm font-bold leading-normal tracking-[0.015em]">
-                <span className="truncate">Get Started</span>
-              </button>
-              <button className="flex cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 bg-[#f4eee7] text-[#1c150d] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </header>
-        <main className="flex-grow">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="w-full max-w-6xl mx-auto">
-              <div className="mb-12">
-                <div
-                  className="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat rounded-xl items-start justify-end px-4 sm:px-10 pb-10"
-                  style={{backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("https://cdn.usegalileo.ai/stability/58040ba1-58a0-43f1-befe-3068eef5bf71.png")'}}
-                >
-                  <div className="flex flex-col gap-2 text-left">
-                    <h1 className="text-white text-4xl sm:text-5xl font-black leading-tight tracking-[-0.033em]">
-                      AI-Powered Soil Analysis
-                    </h1>
-                    <h2 className="text-white text-sm sm:text-base font-normal leading-normal">
-                      Understand soil health, nutrient levels, and more with our AI-powered soil analysis. Get actionable insights for better crop care.
-                    </h2>
-                  </div>
-                  <div className="w-full max-w-[480px]">
-                    <div className="flex w-full items-stretch rounded-xl h-14 sm:h-16">
-                      <div className="text-[#9c7849] flex border border-[#e8ddce] bg-[#fcfaf8] items-center justify-center pl-[15px] rounded-l-xl border-r-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <circle cx="11" cy="11" r="8"></circle>
-                          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                      </div>
-                      <input
-                        placeholder="Enter your location"
-                        className="flex-grow form-input min-w-0 resize-none overflow-hidden text-[#1c150d] focus:outline-none focus:ring-0 border border-[#e8ddce] bg-[#fcfaf8] focus:border-[#e8ddce] placeholder:text-[#9c7849] px-[15px] rounded-none border-l-0 text-sm sm:text-base font-normal leading-normal"
-                      />
-                      <div className="flex items-center justify-center rounded-r-xl border-l-0 border border-[#e8ddce] bg-[#fcfaf8] pr-[7px]">
-                        <button className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 sm:h-12 sm:px-5 bg-[#f49a25] text-[#1c150d] text-sm sm:text-base font-bold leading-normal tracking-[0.015em]">
-                          <span className="truncate">Analyze Soil</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="mb-12">
-                <h2 className="text-[#1c150d] text-3xl sm:text-4xl font-bold leading-tight tracking-[-0.033em] mb-4">
-                  Unlock the full potential of your crops
-                </h2>
-                <button className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 sm:h-12 sm:px-5 bg-[#f49a25] text-[#1c150d] text-sm sm:text-base font-bold leading-normal tracking-[0.015em]">
-                  <span className="truncate">Learn More</span>
-                </button>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
-                {[
-                  "https://cdn.usegalileo.ai/stability/b025b8d6-95f1-4937-9ca5-0cdff0d4bcbc.png",
-                  "https://cdn.usegalileo.ai/sdxl10/764d599b-322d-4c27-b15f-9a7694dd8cd3.png",
-                  "https://cdn.usegalileo.ai/stability/7ead4119-5b15-4d3b-9bdb-4128eab290b8.png"
-                ].map((url, index) => (
-                  <div key={index} className="aspect-video">
-                    <div
-                      className="w-full h-full bg-center bg-no-repeat bg-cover rounded-xl"
-                      style={{backgroundImage: `url("${url}")`}}
-                    ></div>
-                  </div>
-                ))}
-              </div>
-              <div className="text-center">
-                <h2 className="text-[#1c150d] text-3xl sm:text-4xl font-bold leading-tight tracking-[-0.033em] mb-6">
-                  Ready to grow smarter?
-                </h2>
-                <button className="inline-flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 sm:h-12 sm:px-5 bg-[#f49a25] text-[#1c150d] text-sm sm:text-base font-bold leading-normal tracking-[0.015em]">
-                  <span className="truncate">Contact Us</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </main>
-      </div>
+    <div style={{ backgroundColor: 'var(--background)', minHeight: '100vh' }}>
+      <NavBar />
+      <HeroSection />
+      <AboutSection />
+      <ServicesSection />
+      <GovernmentSchemeSection />
+      <TestimonialsSection />
+      <ContactSection />
+      <Footer />
     </div>
   );
 };
